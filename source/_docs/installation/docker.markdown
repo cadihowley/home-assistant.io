@@ -8,9 +8,7 @@ redirect_from: /getting-started/installation-docker/
 
 These below instructions are for an installation of Home Assistant Core running in your own Docker environment, which you manage yourself.
 
-Note that Docker command line option `--net=host` or the compose file equivalent `network_mode: host` must be used to put put Home Assistant on the host's network, otherwise certain functionality - including mDNS and UPnP - will break. The `-p` command line option or the compose file equivalent `ports:` is not compatible with host networking mode and must not be used.
-
-For an installation of Home Assistant Supervised, which includes Home Assistant's add-on ecosystem, see the instructions for installing [Home Assistant Supervised on a generic Linux host](/hassio/installation/#alternative-install-home-assistant-supervised-on-a-generic-linux-host/).
+Note that Docker command line option `--net=host` or the compose file equivalent `network_mode: host` must be used to put Home Assistant on the host's network, otherwise certain functionality - including mDNS and UPnP - will break. The `-p` command line option or the compose file equivalent `ports:` is not compatible with host networking mode and must not be used.
 
 </div>
 
@@ -248,6 +246,13 @@ To restart Home Assistant when you have changed configuration:
 docker-compose restart
 ```
 
+To update your docker-compose image to the latest version and restart:
+
+```bash
+docker-compose pull
+docker-compose up -d --build homeassistant
+```
+
 ## Exposing Devices
 
 In order to use Z-Wave, Zigbee or other integrations that require access to devices, you need to map the appropriate device into the container. Ensure the user that is running the container has the correct privileges to access the `/dev/tty*` file, then add the device mapping to your Docker command:
@@ -283,3 +288,11 @@ or in a `docker-compose.yml` file:
 On Mac, USB devices are [not passed through](https://github.com/docker/for-mac/issues/900) by default. Follow the instructions in [Using USB with Docker for Mac](https://dev.to/rubberduck/using-usb-with-docker-for-mac-3fdd) by Christopher McClellan if your device is not showing up.
 
 </div>
+
+## Optimizations
+
+The Home Assistant Container is using an alternative memory allocation library [jemalloc](http://jemalloc.net/) for better memory management and Python runtime speedup.
+
+As Jemalloc can cause issues on certain hardware, it can be disabled by passing the environment variable `DISABLE_JEMALLOC` with any value, for example: `-e "JEMALLOC_DISABLE=true"`.
+
+The error message `<jemalloc>: Unsupported system page size` is one known indicator. 
