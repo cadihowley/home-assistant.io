@@ -93,7 +93,7 @@ Optional:
 
 ### Manual configuration
 
-By default, any discovered Cast device is added to Home Assistant. This can be restricted by supplying a white list of wanted chrome casts.
+By default, any discovered Cast device is added to Home Assistant. This can be restricted by supplying a list of wanted chrome casts.
 
 ```yaml
 # Example configuration.yaml entry
@@ -108,8 +108,8 @@ media_player:
   required: true
   type: list
   keys:
-    host:
-      description: IP address of a Cast device to add to Home Assistant. Use only if you don't want to add all available devices. The device won't be added until discovered through mDNS.
+    uuid:
+      description: UUID of a Cast device to add to Home Assistant. Use only if you don't want to add all available devices. The device won't be added until discovered through mDNS.
       required: false
       type: string
     ignore_cec:
